@@ -39,6 +39,9 @@
   `(font-lock-comment-face :slant italic)
   `(font-lock-doc-face :slant italic))
 
+;; Disable current line highlighting
+(remove-hook 'doom-first-buffer-hook #'global-hl-line-mode)
+
 ;; -----------------------------------------------------------------------------
 ;; Line numbers
 ;; -----------------------------------------------------------------------------
@@ -246,7 +249,6 @@
 
 ;; Enable visual line mode for visual line wrapping
 (global-visual-line-mode 1)
-
 
 ;; -----------------------------------------------------------------------------
 ;; Multiple cursors keybindings
