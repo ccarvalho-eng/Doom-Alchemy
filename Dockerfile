@@ -1,7 +1,11 @@
 FROM elixir:latest
 
 RUN apt-get update \
-    && apt-get install -y emacs
+    && apt-get install -y \
+    emacs \
+    cmake \
+    libtool \
+    libvterm-dev
 
 RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs \
     && echo "y" | ~/.config/emacs/bin/doom env \
