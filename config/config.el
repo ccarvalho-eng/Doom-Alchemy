@@ -118,3 +118,13 @@
 (use-package! lsp-elixir
   :defer t
   :hook (elixir-mode . lsp))
+
+(after! lsp-mode
+  (dolist (match
+           '("[/\\\\].direnv$"
+             "[/\\\\]node_modules$"
+             "[/\\\\]deps"
+             "[/\\\\]priv"
+             "[/\\\\]build"
+             "[/\\\\]_build"))
+    (add-to-list 'lsp-file-watch-ignored match)))
