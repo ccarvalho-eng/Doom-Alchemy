@@ -5,13 +5,20 @@ RUN apt-get update \
     emacs \
     cmake \
     libtool \
-    libvterm-dev
+    libvterm-dev \
+    fontconfig \
+    git \
+    curl
 
 RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs \
     && echo "y" | ~/.config/emacs/bin/doom env \
     && yes "y" | ~/.config/emacs/bin/doom install
 
 COPY config/config.el config/init.el config/packages.el /root/.config/doom/
+
+RUN git clone https://github.com/domtronn/all-the-icons.el /tmp/all-the-icons \
+    && cp /tmp/all-the-icons/fonts/* /usr/local/share/fonts/ \
+    && fc-cache -f -v
 
 RUN ~/.config/emacs/bin/doom sync
 
