@@ -3,77 +3,51 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
+;; Projectile configuration
+(use-package! projectile
+  :config
+  (setq projectile-project-search-path '("/mnt/host")
+        projectile-enable-caching t
+        projectile-indexing-method 'alien
+        projectile-sort-order 'recentf
+        projectile-completion-system 'ivy)
+  (projectile-mode +1))
 
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets. It is optional.
-;; (setq user-full-name "John Doe"
-;;       user-mail-address "john@doe.com")
+;; Recent files configuration
+(use-package! recentf
+  :config
+  (setq recentf-max-saved-items 50
+        recentf-max-menu-items 15
+        recentf-auto-cleanup 'never
+        recentf-exclude '(".gz" ".xz" ".zip" ".zst"))
+  (recentf-mode +1))
 
-;; Doom exposes five (optional) variables for controlling fonts in Doom:
-;;
-;; - `doom-font' -- the primary font to use
-;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
-;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;; - `doom-symbol-font' -- for symbols
-;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
-;;
-;; See 'C-h v doom-font' for documentation and more examples of what they
-;; accept. For example:
-;;
-;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
-;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
-;;
-;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
-;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
-;; refresh your font settings. If Emacs still can't find your font, it likely
-;; wasn't installed correctly. Font issues are rarely Doom issues!
+;; Savehist configuration
+(use-package! savehist
+  :config
+  (setq savehist-file (concat doom-cache-dir "savehist")
+        savehist-additional-variables '(search-ring regexp-search-ring)
+        savehist-autosave-interval 60)
+  (savehist-mode +1))
 
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
+;; -----------------------------------------------------------------------------
+;; Theme
+;; -----------------------------------------------------------------------------
 (setq doom-theme 'doom-one)
 
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
+(custom-set-faces!
+  `(font-lock-comment-face :slant italic)
+  `(font-lock-doc-face :slant italic))
+
+;; -----------------------------------------------------------------------------
+;; Line numbers
+;; -----------------------------------------------------------------------------
 (setq display-line-numbers-type t)
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-
-
-;; Whenever you reconfigure a package, make sure to wrap your config in an
-;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
-;;
-;;   (after! PACKAGE
-;;     (setq x y))
-;;
-;; The exceptions to this rule:
-;;
-;;   - Setting file/directory variables (like `org-directory')
-;;   - Setting variables which explicitly tell you to set them before their
-;;     package is loaded (see 'C-h v VARIABLE' to look up their documentation).
-;;   - Setting doom variables (which start with 'doom-' or '+').
-;;
-;; Here are some additional functions/macros that will help you configure Doom.
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;; Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
-;; etc).
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
+;; -----------------------------------------------------------------------------
+;; Elixir configuration
+;; -----------------------------------------------------------------------------
+(use-package! exunit)
 
 ;; -----------------------------------------------------------------------------
 ;; LSP configuration
@@ -119,6 +93,85 @@
   :defer t
   :hook (elixir-mode . lsp))
 
+;; -----------------------------------------------------------------------------
+;; Optional: lsp-treemacs integration
+;; -----------------------------------------------------------------------------
+(use-package! lsp-treemacs
+  :commands lsp-treemacs-errors-list
+  :config
+  (lsp-treemacs-sync-mode 1))
+
+;; -----------------------------------------------------------------------------
+;; Folding configuration
+;; -----------------------------------------------------------------------------
+(setq lsp-enable-folding t)
+(use-package! lsp-origami)
+(add-hook! 'lsp-after-open-hook #'lsp-origami-try-enable)
+
+;; -----------------------------------------------------------------------------
+;; Custom functions
+;; -----------------------------------------------------------------------------
+(defun elixir-append-inspect()
+  (interactive)
+  (evil-append-line nil)
+  (insert " |> IO.inspect")
+  (evil-normal-state))
+
+(defun elixir-mix-credo ()
+  (interactive)
+  (let ((default-directory (projectile-project-root)))
+    (compile "mix credo")))
+
+(defun elixir-mix-dialyzer ()
+  (interactive)
+  (let ((default-directory (projectile-project-root)))
+    (compile "mix dialyzer")))
+
+(defun elixir-mix-deps-compile ()
+  (interactive)
+  (let ((default-directory (projectile-project-root)))
+    (compile "mix deps.compile")))
+
+(defun elixir-mix-deps-get ()
+  (interactive)
+  (let ((default-directory (projectile-project-root)))
+    (compile "mix deps.get")))
+
+(defun elixir-mix-ecto-create ()
+  (interactive)
+  (let ((default-directory (projectile-project-root)))
+    (compile "mix ecto.create")))
+
+(defun elixir-mix-ecto-migrate ()
+  (interactive)
+  (let ((default-directory (projectile-project-root)))
+    (compile "mix ecto.migrate")))
+
+(defun elixir-mix-ecto-rollback ()
+  (interactive)
+  (let ((default-directory (projectile-project-root)))
+    (compile "mix ecto.rollback")))
+
+;; -----------------------------------------------------------------------------
+;; Elixir keybindings
+;; -----------------------------------------------------------------------------
+(map! :mode elixir-mode
+      :leader
+      :desc "Sort Lines" :nve "l" #'sort-lines
+      :desc "iMenu" :nve "c/" #'lsp-ui-imenu
+      :desc "Toggle Test" :nve "cT" #'exunit-toggle-file-and-test
+      :desc "IO.inspect/1" :nve "cI" #'elixir-append-inspect
+      :desc "mix credo" :nve "mc" #'elixir-mix-credo
+      :desc "mix dialyzer" :nve "mdy" #'elixir-mix-dialyzer
+      :desc "mix deps.compile" :nve "mDc" #'elixir-mix-deps-compile
+      :desc "mix deps.get" :nve "mDg" #'elixir-mix-deps-get
+      :desc "mix ecto.create" :nve "meC" #'elixir-mix-ecto-create
+      :desc "mix ecto.migrate" :nve "meM" #'elixir-mix-ecto-migrate
+      :desc "mix ecto.rollback" :nve "meR" #'elixir-mix-ecto-rollback)
+
+;; -----------------------------------------------------------------------------
+;; LSP mode file watch ignored
+;; -----------------------------------------------------------------------------
 (after! lsp-mode
   (dolist (match
            '("[/\\\\].direnv$"
@@ -128,3 +181,102 @@
              "[/\\\\]build"
              "[/\\\\]_build"))
     (add-to-list 'lsp-file-watch-ignored match)))
+
+;; -----------------------------------------------------------------------------
+;; Neotree configuration
+;; -----------------------------------------------------------------------------
+(use-package! neotree
+  :defer t
+  :config
+  ;; Theme and appearance settings
+  (setq neo-theme (if (display-graphic-p) 'nerd 'arrow))
+  (setq neo-window-width 30)
+  (setq neo-window-fixed-size nil)
+  (setq neo-mode-line-type 'neotree)
+  (setq neo-show-hidden-files t)
+  (setq neo-create-file-auto-open t)
+  (setq neo-banner-message nil)
+  (setq neo-auto-indent-point t)
+  (setq neo-keymap-style 'concise)
+  (setq neo-window-position 'left)
+
+  ;; Auto-reveal current file
+  (setq neo-smart-open t)
+
+  ;; Custom icons from Doom themes
+  (doom-themes-neotree-config)
+  (setq doom-themes-neotree-file-icons t)
+
+  ;; Prevent text wrapping within NeoTree
+  (add-hook 'neo-after-create-hook
+            (lambda (_)
+              (setq truncate-lines t)))
+
+  ;; Ignore files/directories
+  (setq neo-hidden-regexp-list
+        '("^\\." "\\.pyc$" "~$" "^#.*#$" "\\.elc$"
+          "__pycache__" ".vscode" ".git" ".DS_Store"))
+
+  ;; Auto-resize NeoTree window
+  (add-hook 'neo-after-create-hook
+            (lambda (_)
+              (let ((fit-window-to-buffer-horizontally t))
+                (neo-buffer--with-resizable-window
+                 (fit-window-to-buffer)))))
+
+  ;; Keybindings
+  (map! :leader
+        :desc "Toggle NeoTree" :n "<f8>" #'neotree-toggle))
+
+;; Automatically toggle NeoTree when opening a new frame
+(add-hook 'after-make-frame-functions
+          (lambda (frame)
+            (select-frame frame)
+            (if (display-graphic-p frame)
+                (neotree-toggle))))
+
+;; -----------------------------------------------------------------------------
+;; Text wrapping
+;; -----------------------------------------------------------------------------
+;; Set fill-column to a reasonable value
+(setq-default fill-column 80)
+
+;; Enable auto-fill-mode to automatically wrap text at `fill-column`
+(add-hook 'text-mode-hook #'auto-fill-mode)
+
+;; Enable visual line mode for visual line wrapping
+(global-visual-line-mode 1)
+
+
+;; -----------------------------------------------------------------------------
+;; Multiple cursors keybindings
+;; -----------------------------------------------------------------------------
+(map! :leader
+      (:prefix "m"
+        :desc "Edit lines" "l" #'mc/edit-lines
+        :desc "Add cursor to all" "a" #'mc/mark-all-like-this))
+
+;; -----------------------------------------------------------------------------
+;; Permanently display workspace tabs
+;; -----------------------------------------------------------------------------
+(after! persp-mode
+  ;; alternative, non-fancy version which only centers the output of +workspace--tabline
+  (defun workspaces-formatted ()
+    (+doom-dashboard--center (frame-width) (+workspace--tabline)))
+
+  (defun hy/invisible-current-workspace ()
+    "The tab bar doesn't update when only faces change (i.e. the
+current workspace), so we invisibly print the current workspace
+name as well to trigger updates"
+    (propertize (safe-persp-name (get-current-persp)) 'invisible t))
+
+  (customize-set-variable 'tab-bar-format '(workspaces-formatted tab-bar-format-align-right hy/invisible-current-workspace))
+
+  ;; don't show current workspaces when we switch, since we always see them
+  (advice-add #'+workspace/display :override #'ignore)
+  ;; same for renaming and deleting (and saving, but oh well)
+  (advice-add #'+workspace-message :override #'ignore))
+
+;; need to run this later for it to not break frame size for some reason
+(run-at-time nil nil (cmd! (tab-bar-mode +1)))
+

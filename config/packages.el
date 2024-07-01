@@ -13,9 +13,6 @@
 (package! exec-path-from-shell)
 (package! keychain-environment)
 (package! easy-jekyll)
-(package! hurl-mode :recipe (:host github :repo "jaszhe/hurl-mode" :files ("*.el")))
-(package! org-roam-ui)
-(package! ob-mermaid)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
