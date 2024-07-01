@@ -7,6 +7,10 @@ RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs \
     && echo "y" | ~/.config/emacs/bin/doom env \
     && yes "y" | ~/.config/emacs/bin/doom install
 
+COPY config/config.el config/init.el config/packages.el /root/.config/doom/
+
+RUN ~/.config/emacs/bin/doom sync
+
 RUN git clone https://github.com/elixir-lsp/elixir-ls ~/.elixir-ls \
     && cd ~/.elixir-ls \
     && mix local.hex --force \
