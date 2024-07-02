@@ -13,10 +13,3 @@ fi
 echo "Building the Docker image $IMAGE_NAME with Elixir version $ELIXIR_VERSION..."
 docker build --build-arg ELIXIR_VERSION=$ELIXIR_VERSION -t $IMAGE_NAME .
 
-if [ $? -eq 0 ]; then
-    echo "Docker image built successfully."
-    echo "Running the Docker container with host directory mounted: $HOST_DIR"
-    docker run -it -v $HOST_DIR:/mnt/host $IMAGE_NAME
-else
-    echo "Docker image build failed."
-fi
