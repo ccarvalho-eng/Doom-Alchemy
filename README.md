@@ -1,4 +1,4 @@
-# Doom Emacs Image
+## Doom Emacs Image
 
 This project provides a Docker setup for running Doom Emacs with Elixir support. It includes installation steps for Emacs, necessary development tools, Doom Emacs configuration, fonts, and Elixir LS (Language Server) for enhanced development capabilities.
 
@@ -21,7 +21,7 @@ To build the Docker image, you can use the provided `build.sh` script. This scri
 
 ``` 
 
-# Running the Docker Container
+## Running the Docker Container
 
 Once the image is built, you can run the Docker container using the `run.sh` script. This script also allows specifying the Docker image name.
 
@@ -33,13 +33,13 @@ Once the image is built, you can run the Docker container using the `run.sh` scr
 ./run.sh my-custom-image
 ```
 
-# Configuration
-## Customizing Emacs and Doom Emacs
+## Configuration
+### Customizing Emacs and Doom Emacs
 
 You can customize Emacs and Doom Emacs configurations by modifying the files
 under `config/` directory before building the Docker image.
 
-# Changing Elixir Version
+## Changing Elixir Version
 
 To use a different version of Elixir, specify the ELIXIR_VERSION argument when
 running `build.sh`.
