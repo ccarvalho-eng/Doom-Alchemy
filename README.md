@@ -1,4 +1,4 @@
-## Doom Emacs Image
+## Doom Alchemy
 
 This project provides a Docker setup for running Doom Emacs with Elixir support. It includes installation steps for Emacs, necessary development tools, Doom Emacs configuration, fonts, and Elixir LS (Language Server) for enhanced development capabilities.
 
