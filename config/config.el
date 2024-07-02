@@ -38,13 +38,8 @@
 (setq doom-theme 'doom-one)
 
 (custom-set-faces!
- ;; Existing configurations
  `(font-lock-comment-face :slant italic)
- `(font-lock-doc-face :slant italic)
- ;; Tab-bar customization
- `(tab-bar :background "#282c34" :foreground "#bbc2cf")
- `(tab-bar-tab :background "#282c34" :foreground "#bbc2cf")
- `(tab-bar-tab-inactive :background "#282c34" :foreground "#5B6268"))
+ `(font-lock-doc-face :slant italic))
 
 ;; Disable current line highlighting
 (remove-hook 'doom-first-buffer-hook #'global-hl-line-mode)
