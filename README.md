@@ -13,6 +13,9 @@ This project provides a Docker setup for running Doom Emacs with Elixir support.
 To build the Docker image, you can use the provided `build.sh` script. This script allows you to specify the Docker image name and optionally the version of Elixir.
 
 ```bash
+# Ensure build.sh has executable permissions
+chmod +x build.sh
+
 # Build with default settings (doom-emacs with latest Elixir)
 ./build.sh
 
@@ -26,6 +29,9 @@ To build the Docker image, you can use the provided `build.sh` script. This scri
 Once the image is built, you can run the Docker container using the `run.sh` script. This script also allows specifying the Docker image name.
 
 ```bash
+# Ensure build.sh has executable permissions
+chmod +x run.sh
+
 # Run container with default image name (doom-emacs)
 ./run.sh
 
