@@ -33,6 +33,13 @@ Once the image is built, you can run the Docker container using the `run.sh` scr
 ./run.sh my-custom-image
 ```
 
+## Mounting Host Directory
+
+To access files from your host system within the Docker container, the `run.sh`
+script mounts the host directory under the /mnt/host directory inside the
+container. You can change the host directory path as needed by modifying the
+`run.sh` script.
+
 ## Configuration
 ### Customizing Emacs and Doom Emacs
 
