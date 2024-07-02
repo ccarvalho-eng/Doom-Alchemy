@@ -26,9 +26,6 @@ RUN git clone https://github.com/domtronn/all-the-icons.el /tmp/all-the-icons \
     && cp /tmp/all-the-icons/fonts/* /usr/local/share/fonts/ \
     && fc-cache -f -v
 
-# Run doom sync to ensure all packages are installed
-RUN ~/.config/emacs/bin/doom sync
-
 # Install Elixir LS
 RUN git clone https://github.com/elixir-lsp/elixir-ls ~/.elixir-ls \
     && cd ~/.elixir-ls \
@@ -36,6 +33,9 @@ RUN git clone https://github.com/elixir-lsp/elixir-ls ~/.elixir-ls \
     && mix deps.get \
     && MIX_ENV=prod mix compile \
     && MIX_ENV=prod mix elixir_ls.release2
+
+# Run doom sync to ensure all packages are installed
+RUN ~/.config/emacs/bin/doom sync
 
 # Set the entrypoint for the container
 ENTRYPOINT ["emacs"]
