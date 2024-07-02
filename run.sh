@@ -1,6 +1,19 @@
 #!/usr/bin/env sh
 
-IMAGE_NAME="doom-emacs"
+# Usage:
+# ./run.sh [IMAGE_NAME]
+#
+# If IMAGE_NAME is provided, it will be used as the Docker image name.
+# Otherwise, it defaults to "doom-emacs".
+#
+# Example:
+# ./run.sh my-custom-image
+# This will run a Docker container with the name "my-custom-image".
+#
+# ./run.sh
+# This will run a Docker container with the default name "doom-emacs".
+
+IMAGE_NAME=${1:-doom-emacs}
 
 HOST_DIR="$HOME"
 
