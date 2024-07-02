@@ -3,7 +3,9 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
+;; -----------------------------------------------------------------------------
 ;; Projectile configuration
+;; -----------------------------------------------------------------------------
 (use-package! projectile
   :config
   (setq projectile-project-search-path '("/mnt/host")
@@ -160,9 +162,6 @@
   (let ((default-directory (projectile-project-root)))
     (compile "mix ecto.rollback")))
 
-;; -----------------------------------------------------------------------------
-;; Elixir keybindings
-;; -----------------------------------------------------------------------------
 (map! :mode elixir-mode
       :leader
       :desc "Sort Lines" :nve "l" #'sort-lines
