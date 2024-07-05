@@ -25,13 +25,6 @@ docker compose build --build-arg ELIXIR_VERSION=1.17
 docker compose run doom-emacs
 ```
 
-## Mounting Host Directory
-
-To access files from your host system within the Docker container, the `run.sh`
-script mounts the host directory under the /mnt/host directory inside the
-container. You can change the host directory path as needed by modifying the
-`run.sh` script.
-
 ## Configuration
 ### Customizing Emacs and Doom Emacs
 
