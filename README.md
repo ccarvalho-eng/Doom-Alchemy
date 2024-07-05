@@ -15,18 +15,14 @@ This project provides a Docker setup for running Doom Emacs with Elixir support.
 docker compose up
 
 # Build with custom project name and a speficic Elixir version
-docker compose -p custom-project-name build --build-arg ELIXIR_VERSION=1.17
+docker compose build --build-arg ELIXIR_VERSION=1.17
 ``` 
 
 ## Running the Docker Container
 
 ```bash
-# Run container with default image name (doom-emacs)
+# Run a service
 docker compose run doom-emacs
-
-# Run custom image with mounted directory, in case you built and image for 
-# a speficic project.
-docker run -it -v $HOST_DIR:/mnt/host $IMAGE_NAME
 ```
 
 ## Mounting Host Directory
