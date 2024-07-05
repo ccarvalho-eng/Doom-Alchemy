@@ -1,5 +1,6 @@
 # Use the base Elixir image
 ARG ELIXIR_VERSION=latest
+
 FROM elixir:${ELIXIR_VERSION}
 
 # Install necessary packages
@@ -11,7 +12,8 @@ RUN apt-get update \
        libvterm-dev \
        fontconfig \
        git \
-       curl
+       curl \
+       postgresql-client
 
 # Clone Doom Emacs and set it up
 RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs \
@@ -36,6 +38,9 @@ RUN git clone https://github.com/elixir-lsp/elixir-ls ~/.elixir-ls \
 
 # Run doom sync to ensure all packages are installed
 RUN ~/.config/emacs/bin/doom sync
+
+# Exposed ports
+EXPOSE 4000
 
 # Set the entrypoint for the container
 ENTRYPOINT ["emacs"]
